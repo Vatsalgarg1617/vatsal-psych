@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,7 @@ public class Question extends Auditable {
 	private String correctAnswers;
 	
 	@OneToMany(cascade = CascadeType.ALL , mappedBy = "question")
+	@JsonManagedReference
 	@Getter
 	@Setter
 	private Set<EllenAnswer> ellenAnswers = new HashSet<EllenAnswer>();

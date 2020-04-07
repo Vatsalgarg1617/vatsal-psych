@@ -36,6 +36,9 @@ public class HelloWorldController {
 	
 	@GetMapping("/populate")
 	public String populateDB() {
+		playerRepository.deleteAll();
+		questionRepository.deleteAll();
+		gameRepository.deleteAll();
 		Player luffy = new Player.Builder().alias("Monkey D. luffy")
 				.saltedHashedPassword("strawhat")
 				.email("luffy@vatsal.com")
@@ -47,6 +50,8 @@ public class HelloWorldController {
 				.build();
 		playerRepository.save(robin);
 		Game game = new Game();
+		game.setGameMode(GameMode.IS_THIS_A_FACT);
+		game.setLearder(luffy);
 		game.getPlayers().add(luffy);
 		gameRepository.save(game);
 		questionRepository.save(new Question("What is the most important Poneglyph" ,

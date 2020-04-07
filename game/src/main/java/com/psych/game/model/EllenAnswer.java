@@ -6,6 +6,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,7 @@ import lombok.Setter;
 public class EllenAnswer extends Auditable{
 	
 	@ManyToOne
+	@JsonBackReference
 	@NotNull
 	private Question question;
 	

@@ -6,6 +6,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,12 +17,14 @@ import lombok.Setter;
 public class PlayerAnswer extends Auditable {
 	@NotNull
 	@ManyToOne
+	@JsonBackReference
 	@Getter
 	@Setter
 	private Round round;
 
 	@NotNull
 	@ManyToOne
+	@JsonIdentityReference
 	@Getter
 	@Setter
 	private Player player;

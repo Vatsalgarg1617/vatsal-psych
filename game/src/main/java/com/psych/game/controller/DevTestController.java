@@ -1,6 +1,7 @@
-package com.psych.game;
+package com.psych.game.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,15 @@ import com.psych.game.model.Game;
 import com.psych.game.model.GameMode;
 import com.psych.game.model.Player;
 import com.psych.game.model.Question;
+import com.psych.game.model.User;
 import com.psych.game.repositories.GameRepository;
 import com.psych.game.repositories.PlayerRepository;
 import com.psych.game.repositories.QuestionRepositories;
+import com.psych.game.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/dev-test")
-public class HelloWorldController {
+public class DevTestController {
 	
 	@Autowired
 	private QuestionRepositories questionRepository;
@@ -29,6 +32,9 @@ public class HelloWorldController {
 	@Autowired
 	private GameRepository gameRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@GetMapping("/")
 	public String hello() {
 		return "Hello, World";
@@ -36,13 +42,23 @@ public class HelloWorldController {
 	
 	@GetMapping("/populate")
 	public String populateDB() {
+		
+		for(Player player: playerRepository.findAll()) {
+			player.getGames().clear();
+			playerRepository.save(player);
+		}
+		
+		gameRepository.deleteAll();
 		playerRepository.deleteAll();
 		questionRepository.deleteAll();
-		gameRepository.deleteAll();
+		
 		Player luffy = new Player.Builder().alias("Monkey D. luffy")
 				.saltedHashedPassword("strawhat")
 				.email("luffy@vatsal.com")
 				.build();
+		/*
+		 * Set<Game> x = luffy.getGames(); x.iterator();
+		 */
 		playerRepository.save(luffy);
 		Player robin = new Player.Builder().alias("Nico Robin")
 				.saltedHashedPassword("punaglyph")
@@ -80,6 +96,16 @@ public class HelloWorldController {
 		return playerRepository.findById(id).orElseThrow();
 	}
 	
+	
+	@GetMapping("/users")
+	public List<User> getAllUsers(){
+		return userRepository.findAll();
+	}
+	
+	@GetMapping("/users/{id}")
+	public User getUserById(@PathVariable(name="id") Long id){
+		return userRepository.findById(id).orElseThrow();
+	}
 	
 	@GetMapping("/games")
 	public List<Game> getAllGames(){
